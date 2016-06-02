@@ -39,9 +39,6 @@ from src.obj import *
 import obj
 #+END_SRC
 
-#+BEGIN_SRC python :tangle ../../tests/__init__.py :eval no
-print "tests package"
-#+END_SRC
 
 
 
@@ -51,7 +48,8 @@ print "tests package"
    These are some of the custom exceptions used in the application.
 
 *** AttributeRequired
-
+Defined a class called AttributeError to be used while addressing issues that
+arise to the user not filling in some attributes of an object. 
 #+BEGIN_SRC python :tangle ../../src/op_exceptions.py :eval no
 class AttributeRequired(Exception):
     str = None
@@ -63,6 +61,9 @@ class AttributeRequired(Exception):
         return repr(self.str)
 
 #+END_SRC
+*** NotAuthorizedError
+Defined a class called  NotAuthorizedError to be used when dealing with cases
+where a user tries to perform an action that he/she is not authorized to perform.
 #+BEGIN_SRC python :tangle ../../src/op_exceptions.py :eval no
 class NotAuthorizedError(Exception):
     str = None
@@ -73,6 +74,10 @@ class NotAuthorizedError(Exception):
     def __str__(self):
         return repr(self.str)
 #+END_SRC
+*** ConstraintError
+Defined a class called ConstraintError to address issues that arise due to a
+conflict between the client's specifications of the way the application must
+function and the way the user tries to use it.
 #+BEGIN_SRC python :tangle ../../src/op_exceptions.py :eval no
 class ConstraintError(Exception):
     str = None
@@ -90,8 +95,10 @@ class ConstraintError(Exception):
 ** Name
 
 *** Construction
-
-     Name is an alphabetical string.
+A class called Name has been defined, which takes alphabetic strings as
+values. The predefined method called is_alphabetic_string is being employed to
+verify if the the value for name being input by the user matches the
+specifications of the client.
 
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
 class Name(object):
@@ -111,6 +118,9 @@ class Name(object):
 
 
 *** Test the Construction
+The construction of Name class is being tested in this section by using the
+test packages that have been imported.
+
 #+BEGIN_SRC python :tangle ../../tests/test_obj.py :eval no
 class TestName1(TestCase):
     TESTING = True
@@ -144,9 +154,10 @@ class TestName3(TestCase):
 ** Email
 
 *** Construction
-
-     Email is a type as defined in RFC [[https://tools.ietf.org/html/rfc5321][5321]], [[https://tools.ietf.org/html/rfc5322][5322]] and [[https://tools.ietf.org/html/rfc6531][6531]].
-     Following is the constructor for this class.
+ Email is a type as defined in RFC [[https://tools.ietf.org/html/rfc5321][5321]], [[https://tools.ietf.org/html/rfc5322][5322]] and [[https://tools.ietf.org/html/rfc6531][6531]]. A new class called
+ Email has been defined. Following is the constructor for this class. The constructor is calling a predefined method
+ called is_email to check if the email being input by the user is in the format
+ the client wants it to be.
 
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
 class Email(object):
@@ -161,7 +172,11 @@ class Email(object):
         
 #+END_SRC
 
+
 *** Test the Construction
+The constructor of class Email is being tested using the test packages
+imported. Different cases where the email matches the required format and those
+where it doesn't have been used to do so.
 #+BEGIN_SRC python :tangle ../../tests/test_obj.py :eval no
 class TestEmail1(TestCase):
     TESTING = True
@@ -197,11 +212,11 @@ class TestEmail3(TestCase):
 
 *** Mutable Data
 
-     These are the data associated with User type, which are mutable
+These are the data associated with User type, which are mutable
 
-     + Name
-     + Email
-     + Role
+  + Name
+  + Email
+  + Role
 **** Test the constructor
  #+BEGIN_SRC python :tangle ../../tests/test_obj.py :eval no
 
@@ -238,6 +253,8 @@ class TestUser(TestCase):
  #+END_SRC
 
 *** Definition
+A class called User has been defined, which has three attributes viz, name,
+email, role. The class also contains a list of all users in the database. 
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
 class User():
     users = [] # this is a static variable, accessed by User.users
@@ -250,14 +267,14 @@ class User():
 *** Constructor
 
 **** Implementation
-
-    Signature of the constructor of =User= is as follows:
+ Signature of the constructor of =User= is as follows:
 
     #+BEGIN_EXAMPLE
     usr = User(name=<object of Name>, email=<object of Email>, 
               role=[<object of Role>, <object of Role> ...])
     #+END_EXAMPLE
-
+The following _init_ describes how the user is being passed as a dictionary
+consisting of name, email and user attributes by employing kwargs.
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
     def __init__(self, **kwargs):
         if kwargs is not None:
@@ -445,6 +462,7 @@ class User():
 
 
 *** Definition
+A class called Role has been defined with name, admin and user as attributes.
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
 class Role():
     name = None
@@ -452,10 +470,8 @@ class Role():
     user = None
 #+END_SRC
 *** Constructor
-
-    The signature of Role is defined as follows
+The signature of Role is defined as follows
     
-
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
     def __init__(self, name):
         self.name = name
@@ -470,6 +486,7 @@ class Role():
 *** Functions
 
 **** setName
+
 ***** Implementation
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
     def to_client(self):
@@ -504,6 +521,9 @@ class test_role_set_name(TestCase):
 
 
 **  Session
+A new class called Session has been defined. The "_init_" takes dictionary in the
+form of kwargs and checks if the user whose session is being created is present. It creates a session if the user is present in the userlist
+and raises an error otherwise. 
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
 class Session():
     user=None
@@ -518,6 +538,8 @@ class Session():
     def get_user(self):
         return self.user
 #+END_SRC
+A method has been defined to check is the user input received is of user type
+and then set the user value received to a user instance.
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
     def _set_user(self, user):
         if not isinstance(user, User):
@@ -533,6 +555,11 @@ class Session():
             'session': self.user.to_client()
         }
 #+END_SRC
+A method for updating name has been defined. It takes in the user whose name is
+to be changed, the new name to be given, the session of the user who is trying
+to change the name as arguments and checks the constraints such as the user
+changing the name being an admin and the matching of each of the arguments to
+their respective types.
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
     def update_name(self, u, session, new_name):
         if session in sessions:
@@ -549,6 +576,7 @@ class Session():
         else:
             raise TypeError("User does not have a session")
 #+END_SRC
+Update_email has been defined to change the email of a user after the checking if the user trying to do so is an admin.  
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
     def update_email(self,u, session, new_email):
         if session.user in sessions:
@@ -564,7 +592,8 @@ class Session():
                     raise TypeError("Not of type User")
         else:
             raise TypeError("User does not have a session")
-#+END_SRC            
+#+END_SRC
+Update_role has been defined to change the role of a user after the checking if the user trying to do so is an admin.           
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
     def update_role(self, u, session, new_role):
         if session.user in sessions:
@@ -592,6 +621,9 @@ class TestSession(TestCase):
  #+END_SRC
 
 **  System
+A new class called System has been defined to simplify writing different
+methods of relevance for the application by making the userlist and
+sessionlist attributes of this class.
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no 
 from sets import Set
 class System():
@@ -605,6 +637,11 @@ class System():
         self.session_set.add(admin_user)
 #+END_SRC
 **** addUser
+A method called add_user has been defined to take in the user to be added and
+the session of the user performing the action as arguments. The constructor of
+the method ensures that the actor is of role admin and raises an error
+otherwise. Also a filter checks if the user trying to be added already exists
+taking email as the unique identification.
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
     def add_user(self, user, session):
         if session.role is not Role.admin:
@@ -618,6 +655,8 @@ class System():
 #+END_SRC
 
 **** getEmailOfUser
+This method takes the user whose email is being requested as an argument and
+checks his presence in the user set and returns his email.
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
     def get_email_of_user(self,user):
         if user in self.user_set:
@@ -660,6 +699,10 @@ class System():
 #+END_SRC
 
 **** del_user
+This method has been defined to delete a specific user from the system. The
+method has been defined in a way such that it takes the user to be deleted and
+the session of the actor and checks if he is an admin and then deletes him from
+the userlist.
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
     def del_user(self, user, session):
         if session.role is not Role.admin:
@@ -674,6 +717,7 @@ class System():
 #+END_SRC
 
 **** get_all_users
+This method just returns the userlist.
 #+BEGIN_SRC python :tangle ../../src/obj.py :eval no
     def get_all_users(self):
         return self.user_set
@@ -706,6 +750,9 @@ class System():
 
 
 *** Run Test Cases
+The test cases for each defined method have been written in a way so as to
+check for all possible constraint violations and ensure the program is
+functioning the way it has been designed to.
  #+BEGIN_SRC python :tangle ../../tests/test_obj.py :eval no
 
 class TestSystem(TestCase):
