@@ -181,25 +181,28 @@ def parse_request(request):
         return False
 
     return data
-
-
-# check if a given string is a number
+#+END_SRC
+**** Is number
+- check if a given string is a number
+#+BEGIN_SRC python :tangle ../../src/utils.py :eval no
 def is_number(s):
     try:
         float(s)
         return True
     except ValueError:
         return False
-
-
-# check if in a given string python bool types are represented
+#+END_SRC
+**** Is Boolean
+- check if in a given string python bool types are represented
+#+BEGIN_SRC python :tangle ../../src/utils.py :eval no
 def is_bool_in_str(s):
     if s == "True" or s == "False":
         return True
     return False
-
-
-# convert python bool types in string to native bool types
+#+END_SRC
+**** Convert Boolean to string
+- convert python bool types in string to native bool types
+#+BEGIN_SRC python :tangle ../../src/utils.py :eval no
 def str_to_bool(s):
     if s == "True":
         return True
@@ -862,10 +865,6 @@ class System(object):
         if System.created == True:
             raise ConstraintError("System has already been created")
         else:
-            #role = Role(name=Name("admin"))
-            #role.save()
-            #role = Role (name = Name ("user"))
-            #role.save()
             self.session_set = []
             self.user_set = []
             System.created = True
@@ -1024,7 +1023,7 @@ class System(object):
 
 
 
-**** Test Constructor
+**** Test for system
 #+BEGIN_SRC python :tangle ../../tests/test_db.py :eval no
 system = None
 def setUp():
@@ -1037,7 +1036,7 @@ def setUp():
     admin_user = User(name=Name("abc"), 
                       email=Email("abc@gmail.com"), 
                       role=Role.get_by_id(1))
-    System.created =False
+    System.created = False
     admin_user.save() 
     system = System()      
     s = Session(user = admin_user)
