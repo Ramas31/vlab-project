@@ -27,7 +27,7 @@ from datetime import datetime
 import json
 
 from op_exceptions import AttributeRequired
-
+from op_exceptions import *
 from utils import *
 
 db = SQLAlchemy()
@@ -54,12 +54,6 @@ class Entity(db.Model):
 
         self.save()
 
-    #print "Setting new val"
-    #print "Calling %s on %s" % (method_to_set, curr_entity)
-    #try:
-    #    getattr(record, method_to_set)(new_val)
-    #except Exception as e:
-    #pass
 
     def delete(self):
         db.session.delete(self)
@@ -76,7 +70,6 @@ class Entity(db.Model):
 import unittest
 from flask.ext.testing import TestCase
 from datetime import datetime
-# import json
 
 from src.db import *
 from src.app import create_app
@@ -137,26 +130,27 @@ def is_email(value):
 
 
 *** Other function for REST
+**** Jsonify List
+- module to hold all utilities/helper functions
+- return a list of dicts as json with correct mime types
+- flask does not provide a jsonify for lists; hence this method
 
 #+BEGIN_SRC python :tangle ../../src/utils.py :eval no
 
-# module to hold all utilities/helper functions
-
-# return a list of dicts as json with correct mime types
-# flask does not provide a jsonify for lists; hence this method
 def jsonify_list(data):
     if type(data) is not list:
         raise Exception('jsonify_list function accepts only a list')
 
     return make_response(json.dumps(data), 200,
                          {'content-type': 'application/json'})
-
-
-# take in a flask request object and try to parse out a dictionary from the
-# request
-# try to find if request is as JSON first, then look into forms, finally force
-# find it.
-# If not found return a dict; else return the parsed data
+#+END_SRC
+**** Parse Request
+- take in a flask request object and try to parse out a dictionary from the
+- request
+- try to find if request is as JSON first, then look into forms, finally force
+- find it.
+- If not found return a dict; else return the parsed data
+#+BEGIN_SRC python :tangle ../../src/utils.py :eval no
 def parse_request(request):
     if request.json:
         # print 'found in request.json'
