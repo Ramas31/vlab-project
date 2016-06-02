@@ -1,0 +1,9 @@
+2016-06-02 11:38:32,578: INFO: api.py: login():64: Successfully Logged in
+2016-06-02 11:39:30,266: INFO: api.py: login():64: Successfully Logged in
+2016-06-02 11:40:17,038: INFO: api.py: login():64: Successfully Logged in
+2016-06-02 11:40:35,167: ERROR: api.py: delete_user():163: Error occured while insertinguser record: Admin cannot delete another admin
+2016-06-02 11:40:35,167: ERROR: app.py: server_error():41: error code = 500
+2016-06-02 11:40:35,167: ERROR: app.py: server_error():44: error desc = Admin cannot delete another admin
+2016-06-02 11:40:38,648: ERROR: api.py: delete_user():163: Error occured while insertinguser record: Admin cannot delete another admin
+2016-06-02 11:40:38,648: ERROR: app.py: server_error():41: error code = 500
+2016-06-02 11:40:38,648: ERROR: app.py: server_error():44: error desc = Admin cannot delete another admin

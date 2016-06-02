@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-5"><h2>Details of <b>{{ user.name }}</b></h2></div>
+  <div class="col-md-3">
+    <a onclick="history.back();" role="button" class="btn btn-success btn-large">Back</a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table class="table table-stripped">
+	<thead>
+	  <tr>
+            <th class="span3">Name</th>
+	    <th class="span7">Email-id</th>
+	    <th class="span2">Role</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+            <td>{{ user.name }}</td>
+	    <td>{{ user.email }}</td>
+	    <td>{{ user.role.name }}</td>
+          </tr>
+	  
+      </tbody>
+      </table>
+      <div class="col-md-12">
+	<div class="col-md-4"></div>
+	<span ng-if="role_name == 'admin' || user_id == user.id">
+          <a href="#/edit-user/{{user.id}}" class="btn btn-primary">Edit</a></span>
+	  <span ng-if="role_name == 'admin' &&  user_id != user.id">
+	      <a ng-click = "delete_user(user.id)" class="btn btn-primary">Delete</a>
+	  
+	</span>
+	
+      </div>
+    </div>
+  </div>
+</div>
