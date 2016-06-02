@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Web interface to User Directory Application</title>
-<!-- 2016-06-02 Thu 11:37 -->
+<!-- 2016-06-02 Thu 15:16 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="VLEAD" />
@@ -360,7 +360,6 @@ app.controller(<span style="font-style: italic;">"view-user"</span>, <span style
         $scope.user = response;
     });
     $scope.delete_user=<span style="font-weight: bold;">function</span>(){
-    
     $http.<span style="font-weight: bold;">delete</span>(<span style="font-style: italic;">"http://localhost:5000/users/"</span>+$routeParams.id, {headers:{<span style="font-style: italic;">'session'</span> : $scope.session_email}}).success(<span style="font-weight: bold;">function</span>(<span style="font-weight: bold; font-style: italic;">response</span>){
         alert(<span style="font-style: italic;">"deleted user"</span>);
       console.log(response);
@@ -478,7 +477,7 @@ app.controller(<span style="font-style: italic;">"edit-user"</span>, <span style
 <div id="postamble" class="status">
 <p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2016-05-11 Wed]</span></span></p>
 <p class="author">Author: VLEAD</p>
-<p class="date">Created: 2016-06-02 Thu 11:37</p>
+<p class="date">Created: 2016-06-02 Thu 15:16</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
