@@ -15,7 +15,6 @@ app.controller("view-user", function($scope,  $http, $routeParams, $route,$windo
        	$scope.user = response;
     });
     $scope.delete_user=function(){
-    
     $http.delete("http://localhost:5000/users/"+$routeParams.id, {headers:{'session' : $scope.session_email}}).success(function(response){
     	alert("deleted user");
       console.log(response);

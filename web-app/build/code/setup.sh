@@ -60,6 +60,15 @@ echo "Installing dependencies.."
 #export http_proxy=$PROXY
 #export https_proxy=$PROXY
 #python setup.py install
+
+mkdir -p build/oursql
+cd build/oursql
+wget https://pypi.python.org/packages/8c/88/9f53a314a2af6f56c0a1249c5673ee384b85dc791bac5c1228772ced3502/oursql-0.9.3.2.tar.gz#md5=ade5959a6571b1626966d47f3ab2d315
+tar xvf oursql-0.9.3.2.tar.gz
+cd oursql-0.9.3.2
+python setup.py install
+
+
 pip install Flask Flask-SQLAlchemy oursql requests flask-cors flask-testing
 if [[ $? -ne 0 ]]; then
   echo "FATAL: Installation failed!"
