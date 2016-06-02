@@ -575,13 +575,10 @@ class TestUser(TestCase):
    privileges are understood 
    
    Different types of roles are:
-   - Owner  :: An owner is user an admin who cannot delete himself
    - Admin :: An admin is an user who can add, modify and delete other users
         except owner
    - User :: A User is a user who can view all other users and either modify or
         delete himself.
-   - Guest :: A Guest is a user who can view all other users
-
 
 *** Immutable Data
      This is the data associated with Institute type, which is immutable.
@@ -784,6 +781,7 @@ class TestRole(TestCase):
 #+END_SRC
 
 ** Session
+A new class called Session has been defined. The ”init” takes dictionary in the form of kwargs and checks if the user whose session is being created is present. It creates a session if the user is present in the userlist and raises an error otherwise.
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
 class Session():
     user=None
@@ -846,6 +844,7 @@ class TestSession(TestCase):
  #+END_SRC
 
 ** System
+A new class called System has been defined to simplify writing different methods of relevance for the application by making the userlist and sessionlist attributes of this class.
 *** Definition
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
 from sets import Set
@@ -882,6 +881,7 @@ class System(object):
 
 #+END_SRC
 **** start_session
+Once the user logs in a session is created for the user. Here email of the user whose session needs to be started is passed is the argument. The user set is filtered as to find the user with that email. This user's session is created by creating an instance of session class and passing the user
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
     def start_session(self, email):
     	loggedin_user = filter(lambda x: x.email == email, self.user_set)
@@ -895,6 +895,7 @@ class System(object):
             raise TypeError("user does not exists")
 #+END_SRC
 **** stop_session
+Once the user logs out a session is terminated for the user. Here email of the user whose session needs to be stopped is passed is the argument. The session set is filtered as to find the user with that email. This user's session is terminated by removing the user from the session set
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
     def stop_session(self, email):
     	loggedin_user = filter(lambda x: x.user.email == email, self.session_set)
@@ -905,6 +906,9 @@ class System(object):
             raise TypeError("user does not exists")
 #+END_SRC
 **** addUser
+A method called add_user has been defined to take in the user to be added and the session of the user performing the action as arguments. The constructor of the method ensures that the actor is of role admin and raises an error otherwise. Also a filter checks if the user trying to be added already exists taking email as the unique identification.
+
+
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
     def add_user(self, user, session):
         if not session.user.role.name == "admin":
@@ -919,6 +923,7 @@ class System(object):
 #+END_SRC
 
 **** getEmailOfUser
+This method takes the user whose email is being requested as an argument and checks his presence in the user set and returns his email.
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
     def get_email_of_user(self,user):
     	self.user_set = User.get_all() 
@@ -929,6 +934,7 @@ class System(object):
 #+END_SRC
 
 **** getNameOfUser
+This method takes the user whose name is being requested as an argument and checks his presence in the user set and returns his name.
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
     def get_name_of_user(self,user):
     	self.user_set = User.get_all() 
@@ -939,6 +945,7 @@ class System(object):
 #+END_SRC
 
 **** getUserByEmail
+This method takes the email  whose user is being requested as an argument and checks his presence in the user set and returns corresponding user.
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
     def get_user_by_email(self,email):
        user_with_required_email = filter(lambda x: x.email == email, self.user_set)
@@ -964,6 +971,7 @@ class System(object):
 #+END_SRC
 
 **** del_user
+This method has been defined to delete a specific user from the system. The method has been defined in a way such that it takes the user to be deleted and the session of the actor and checks if he is an admin and then deletes him from the userlist.
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
     def del_user(self, user, session):
         if not session.user.role.name == "admin":
@@ -980,13 +988,15 @@ class System(object):
 #+END_SRC
 
 **** get_all_users
+This method just returns the userlist.
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
     def get_all_users(self):
     	self.user_set = User.get_all();
         return self.user_set
 #+END_SRC
 
-**** get_all_sessions
+**** get_sessions
+This method just returns the sessionlist or a session of of the useras demanded.
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
     def get_all_sessions(self):
         return self.session_set
@@ -999,6 +1009,7 @@ class System(object):
 #+END_SRC
 
 **** add_session
+
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
 	def add_session(self,u):
 		sess = Session(user = u)
@@ -1006,6 +1017,7 @@ class System(object):
         return sess
 #+END_SRC
 **** set_user
+Adds the user to the session set
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
     def set_user(self,user):
         self.session_set.append(user)
