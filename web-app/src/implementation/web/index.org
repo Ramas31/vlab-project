@@ -68,7 +68,7 @@ business logic in parallel.
 #+END_SRC
 *** Router 
 - =app.js=
-
+ - The following =route= is implemented for displaying the list all the users. The controller =users= will fetch the data from the REST API and will render to the template =users.html=
 #+BEGIN_SRC javascript :tangle ../../src/static/js/app.js :eval no
 var app = angular.module('directoryApp',['ngRoute','directoryApp.controllers']);
 app.config(function($routeProvider){
@@ -77,14 +77,23 @@ app.config(function($routeProvider){
       templateUrl : '/static/partials/users.html',
       controller  : 'users'
     })
+#+END_SRC
+- The following =route= is implemented for displaying the selected user by passing the id of that user. The controller =view-users= will fetch the data of that user from the REST API and will render to the template =view-users.html=
+#+BEGIN_SRC javascript :tangle ../../src/static/js/app.js :eval no
     .when('/view-user/:id', {
       templateUrl : '/static/partials/view-user.html',
       controller  : 'view-user'
     })
+#+END_SRC
+- The following =route= is implemented for adding a user. The controller =add-user= will fetch the data from =add-user.html= and will render to the template REST API
+#+BEGIN_SRC javascript :tangle ../../src/static/js/app.js :eval no
     .when('/add-user/', {
       templateUrl : '/static/partials/add-user.html',
       controller  : 'add-user'
     })
+#+END_SRC
+- The following =route= is implemented for updating the details of the selected user where the id is passed. The controller =edit-user= will fetch the data from the =edit-user.html= and will update the deatils of that user
+#+BEGIN_SRC javascript :tangle ../../src/static/js/app.js :eval no
     .when('/edit-user/:id', {
       templateUrl : '/static/partials/edit-user.html',
       controller  : 'edit-user'
@@ -96,6 +105,7 @@ app.config(function($routeProvider){
 #+END_SRC
 *** Controller
 - =controller.py=
+- The following controller is implemented for displaying the list of users. It consists of a GET request from =/users= and the response is saved in $scope.users
 #+BEGIN_SRC javascript :tangle ../../src/static/js/controllers.js :eval no
 var app = angular.module('directoryApp.controllers',[]);
 app.controller("users", function($scope,  $http, $routeParams, $route,$window){
@@ -105,6 +115,9 @@ app.controller("users", function($scope,  $http, $routeParams, $route,$window){
     });
 
     });
+#+END_SRC
+- The following controller is implemented for displaying the selected user along with the various operations that can be performed on that user by the user of specific role. It consists of a GET request from =/users/id= and the response is saved in $scope.user. Delete user is one of the operations that can be performed on the uder by the admin. If the operation is being performed then a DELETE request from =/users/id=  is invoked.
+#+BEGIN_SRC javascript :tangle ../../src/static/js/controllers.js :eval no
 app.controller("view-user", function($scope,  $http, $routeParams, $route,$window){
     $scope.role_name = $window.role_name;
     $scope.session_email=$window.session_email;
@@ -121,6 +134,9 @@ app.controller("view-user", function($scope,  $http, $routeParams, $route,$windo
   
    }; 
 });
+#+END_SRC
+- The following controller is implemented for displaying the page to input the details of the user to be added and then adding the user to the list of users. It consists of a POST request to =/users=. Data obtained from the user is saved variable data and then passed on along with the url.
+#+BEGIN_SRC javascript :tangle ../../src/static/js/controllers.js :eval no
 app.controller("add-user", function($scope,   $http,  $routeParams,  $route,$window){
     $scope.role_name=$window.role_name;
     $scope.session_email=$window.session_email;
@@ -149,6 +165,10 @@ app.controller("add-user", function($scope,   $http,  $routeParams,  $route,$win
 
 };
 });
+#+END_SRC
+-The following controller is implemented for displaying the page to input the details of the user to be updated and then updating the details of the corresponding user. It consists of a PUT request to =/users= where id and the data is passed. Data obtained from the user is saved variable data and then passed on along with the url.
+#+BEGIN_SRC javascript :tangle ../../src/static/js/controllers.js :eval no
+#+BEGIN_SRC javascript :tangle ../../src/static/js/controllers.js :eval no
 app.controller("edit-user", function($scope,   $http,  $routeParams,  $route,$window){
     $scope.role_name=$window.role_name;
     $scope.session_email=$window.session_email;
@@ -180,6 +200,7 @@ app.controller("edit-user", function($scope,   $http,  $routeParams,  $route,$wi
 #+END_SRC
 *** View
 - =users.html=
+-The following html content displays the list of users along with a view option to view details of a specific user. If the logged in user is an admin then add user option is available. Details of the logged in user is displayed as well. 
 #+BEGIN_SRC javascript :tangle ../../src/static/partials/users.html :eval no
 <div class="row">
   <div class="col-md-9"><h2>Users</h2></div>
