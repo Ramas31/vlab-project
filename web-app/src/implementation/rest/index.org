@@ -102,9 +102,9 @@ def get_emails():
 #+END_SRC   
 
 ** Login/Logout 
-    +This route checks if the user is already logged in. If the user has a session then then the list of users is displayed else the user is asked to enter the email to login.
-    +The following route =/auth/login/= gets the email posted by the user and the list of users in the system. If the entered email is not an empty string then for every u in the user list it is checked if the entered email matches with the email of the u. On identifiction of the user a session is created for the user and redirected to =/=
-    +The following route =/auth/logout/= terminates the session of the user.
+    + This route checks if the user is already logged in. If the user has a session then then the list of users is displayed else the user is asked to enter the email to login.
+    + The following route =/auth/login/= gets the email posted by the user and the list of users in the system. If the entered email is not an empty string then for every u in the user list it is checked if the entered email matches with the email of the u. On identifiction of the user a session is created for the user and redirected to =/=.
+    + The following route =/auth/logout/= terminates the session of the user.
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 @api.route("/", methods=['GET'])
 def index():
