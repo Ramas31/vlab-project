@@ -8,13 +8,20 @@
 #+LATEX: Literal LaTeX code for export
 
 
-This document illustrates building of REST APO
-
+This document illustrates building of REST API
+Different routes have been written down in this document. Each one has been
+written in a way so as to map the route ie; the address starting with a '/' toh
+the corresponding method from object model.
+Also, different ways in which these routes request can be broadly classified
+into GET, PUT, POST, DELETE etc. Each of these have a specific function. For
+example, while using GET, the user is displayed the information that has been
+requested for in the program.
 
 
 * REST
 
 ** Imports for src
+All the necessary dependencies have been imported below.
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 # -*- coding: utf-8 -*-
 
@@ -38,15 +45,16 @@ system = System()
 #+END_SRC
 
 ** Imports for tests
+All the testing related dependencies have been imported below.
 #+BEGIN_SRC python :tangle ../../tests/test_api.py :eval no
 # -*- coding: utf-8 -*-
 import unittest
 from flask.ext.testing import TestCase
-from datetime import datetime	
+from datetime import datetime   
 from src.db import *
 from src.app import create_app
-from src.op_exceptions import AttributeRequired	
-from src.api import * 		
+from src.op_exceptions import AttributeRequired 
+from src.api import *       
 config = {
     'SQLALCHEMY_DATABASE_URI': ''
 }
@@ -54,7 +62,7 @@ config = {
 #+END_SRC
 
 ** GET all users
-
+This route returns a json format list of all users by using GET mode.
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 
 @api.route('/users', methods=['GET'])
@@ -65,7 +73,7 @@ def get_users():
 ** GET all names
 
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
-
+This route gives the json format list of all the names to the front-end in the GET mode.
 @api.route('/names', methods=['GET'])
 def get_names():
     global system
@@ -73,7 +81,8 @@ def get_names():
 #+END_SRC   
 
 ** GET all roles
-   The is the REST API to get all the rolesystem.
+The is the REST API to get all the rolesystem. This route uses GET mode to
+return the json format list of roles
 
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 @api.route('/roles', methods=['GET'])
@@ -82,7 +91,8 @@ def get_roles():
 #+END_SRC
 
 ** GET all emails
-
+This route uses GET mode to return a json format list of emails to the
+front-end.
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 
 @api.route('/emails', methods=['GET'])
@@ -92,6 +102,7 @@ def get_emails():
 #+END_SRC   
 
 ** Login/Logout 
+
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 @api.route("/", methods=['GET'])
 def index():
@@ -140,7 +151,9 @@ def logout_handler():
 #+END_SRC 
 
 ** GET a user with id
-
+This route uses GET mode to get the user by his id which has been entered along
+with the route. Now the method get_by_id is called and the json format output
+is returned.
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 @api.route('/users/<int:id>', methods=['GET'])
 def get_user_by_id(id):
@@ -150,20 +163,22 @@ def get_user_by_id(id):
         abort(404, "No entry for %s with id: %s found." % ("user", id))
     return jsonify(record.to_client())
 #+END_SRC
-	 
+     
 ** GET a role with id
-
+This route takes id as a part of the route and uses GET mode and returns json
+format result obtained using the method get_by_id.
+format 
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 @api.route('/roles/<int:id>', methods=['GET'])
 def get_role_by_id(id):
     record = Role.get_by_id(id)
     if not record:
         abort(404, "No entry for %s with id: %s found." % ("role", id))
-						
+                        
     return jsonify(record.to_client())
 #+END_SRC
 ** GET a email with id
-
+This route is similar to the routes GET a user and role by id. 
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 @api.route('/users/<int:id>/email', methods=['GET'])
 def get_email_by_id(id):
@@ -177,6 +192,7 @@ def get_email_by_id(id):
         return jsonify(d)
 #+END_SRC
 ** GET a name with id
+This route is similar to the other GET by id routes.
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 @api.route('/users/<int:id>/name', methods=['GET'])
 def get_name_by_id(id):
@@ -192,6 +208,7 @@ def get_name_by_id(id):
 
 ** Create a user
    Usage:
+This route uses POST mode to add matter to the application.
    #+BEGIN_EXAMPLE
    POST request
    {
@@ -220,7 +237,7 @@ def create_user():
             user = User(name=Name(name),
                         email=Email(email),
                         role=Role.get_by_id(role_id))
-	    System.add_user(system,user,session)
+        System.add_user(system,user,session)
             return jsonify(user.to_client())
         except Exception, e:
             current_app.logger.error("Error occured while inserting"
@@ -229,19 +246,20 @@ def create_user():
 #+END_SRC
 ** Delete User
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
+A route has been defined by using DELETE mode to call a method del_user and return json format output.
 @api.route('/users/<int:id>', methods=['DELETE'])
 def delete_user(id):
     global system
     ### Check if there is a session and act according to the specification
     if id==0:
-    	abort(500)
+        abort(500)
     else:
         session_email = request.headers.get('session')
         try:
             ses = system.get_session_from_email(session_email)
             session = ses[0]
             user = User.get_by_id(id)
-	    System.del_user(system,user,session)
+        System.del_user(system,user,session)
             return jsonify(id= id,status = 'success')
 
         except Exception, e:
@@ -250,7 +268,7 @@ def delete_user(id):
             abort(500, str(e))
 #+END_SRC
 
-** Update/Delete a user
+** Update a user
 
 
    Usage:
@@ -263,7 +281,8 @@ def delete_user(id):
    "session": "admin@vlabs.ac.in"
    }
    #+END_EXAMPLE
-
+A route has been defined to edit the details of a user passed by giving id
+along with the route. PUT mode is used for this purpose.
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 @api.route('/users/<int:id>', methods=['PUT'])
 def update_delete_user(id):
@@ -304,6 +323,8 @@ def update_delete_user(id):
 
 
 ** GET a user with email 
+A route to adopt GET mode and call for a method get_user_by_email has been
+defined which takes the email string along with the route.
 #+BEGIN_SRC python :tangle ../../src/api.py :eval no
 @api.route('/users/<string:email>', methods=['GET'])
 def get_user_by_email(email):
@@ -336,7 +357,7 @@ class TestUser(TestCase):
         db.drop_all()
         
     def test_get_user_by_id(self):
- 	print "test_get_user_by_id"
+    print "test_get_user_by_id"
         role1 = Role(name = Name("admin"))
         role1.save()
         role2 = Role(name = Name("user"))
@@ -352,7 +373,7 @@ class TestUser(TestCase):
         self.assertEqual(response.status_code, 200)
         
     def test_get_email_by_id(self):
- 	print "test_get_email_by_id"
+    print "test_get_email_by_id"
         role1 = Role(name = Name("admin"))
         role1.save()
         role2 = Role(name = Name("user"))
@@ -369,7 +390,7 @@ class TestUser(TestCase):
         self.assertEqual(response.status_code, 200)
     
     def test_get_name_by_id(self):
- 	print "test_get_name_by_id"
+    print "test_get_name_by_id"
         role1 = Role(name = Name("admin"))
         role1.save()
         role2 = Role(name = Name("user"))
@@ -453,7 +474,7 @@ class TestUser(TestCase):
         self.assertEqual(response.status_code, 200)
        
     def test_get_role_by_id(self):
- 	print "test_get_user_by_id"
+    print "test_get_user_by_id"
         role1 = Role(name = Name("admin"))
         role1.save()
         role2 = Role(name = Name("user"))
@@ -491,6 +512,7 @@ class TestUser(TestCase):
         self.assertEqual(result['name'], "admin user")
 
     def test_update_existing_user(self):
+        print "test_update_existing_user"
         # Create a user
         # update the same user
         role1 = Role(name = Name("admin"))
@@ -575,7 +597,7 @@ class TestUser(TestCase):
                                       headers=headers)
 
         self.assertEqual(response.status_code, 200)
-	
+    
 #+END_SRC 
 
 
