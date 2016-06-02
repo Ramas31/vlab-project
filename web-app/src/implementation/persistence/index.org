@@ -880,6 +880,7 @@ class System(object):
             self.user_set = User.get_all()'''
 
 #+END_SRC
+*** Operations
 **** start_session
 Once the user logs in a session is created for the user. Here email of the user whose session needs to be started is passed is the argument. The user set is filtered as to find the user with that email. This user's session is created by creating an instance of session class and passing the user
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
@@ -1149,7 +1150,7 @@ class TestSystem(TestCase):
 
 #+END_SRC
 
-*** Operations
+
 #+BEGIN_SRC python :tangle ../../src/db.py :eval no
 #system = System() # THIS WILL CAUSE ERROR SINCE THERE ARE db OPERATION IN
                    # AND db IS NOT CREATED AT POINT.
