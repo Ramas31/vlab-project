@@ -1,5 +1,5 @@
 #+TITLE: Data Model for the Mini Version User Directory Application
-#+AUTHOR: VLEAD
+#+AUTHOR: Rama Shanbhag
 #+DATE: [2016-05-11 Wed]
 #+PROPERTY: results output
 #+PROPERTY: exports code
@@ -75,13 +75,33 @@ Encodes the following items of information:
 
 * Abstract Entity Types
 #+BEGIN_SRC spec :tangle spec.txt
+<<<<<<< HEAD
 User
+=======
+User 
+>>>>>>> 0f21024717223a26886a034844c449affa7907d5
+Session
+Role
+Name
+Email
+<<<<<<< HEAD
+
+=======
+>>>>>>> 0f21024717223a26886a034844c449affa7907d5
 #+END_SRC
+
 
 * Relations and cardinality constraints over entity types 
 For each relation, we define its inverse next to it.
 #+BEGIN_SRC spec :tangle spec.txt
 [email, user]  :  User?    > Email!
+<<<<<<< HEAD
+[email, user]  :  User?    > Email!
+=======
+>>>>>>> 0f21024717223a26886a034844c449affa7907d5
+[name, user]   :  User     > Name!
+[role, user]   :  User     > Role!
+[user, session]:  Session  > User!
 #+END_SRC
 
 ** Keys
@@ -111,15 +131,25 @@ state variables.
 
  #+BEGIN_SRC spec
  user-set    : set[User]    ; set of users in the system
+<<<<<<< HEAD
+session-set : set[Session]  ; set of sessions
+=======
+ session-set : set[Session]  ; set of sessions
+>>>>>>> 0f21024717223a26886a034844c449affa7907d5
  #+END_SRC
 
 and five relations
+email:      User > Email!
+name:      User > Name!
+role:      User > Role!
 
  #+BEGIN_SRC spec
  email:      User > Email!
+ name:      User > Name!
+ role:      User > Role!
  #+END_SRC
 
-*** Applying relations to sets
+** Applying relations to sets
 #+begin_example
 
 
@@ -136,12 +166,24 @@ and five relations
 ** Derived Entity sets
  #+BEGIN_SRC spec :tangle spec.txt
  email-set   : set[Email]   = user-set.email        ; set of emails in the system
+<<<<<<< HEAD
+name-set   : set[Name]     = user-set.name         ; set of names in the system
+role-set   : set[Role]     = user-set.role         ; set of roles in the system
+logged-in-user-set   : set[User]     = session-set.user         ; set of all logged-in users in the system
+
+=======
+ name-set   : set[Name]     = user-set.name         ; set of names in the system
+ role-set   : set[Role]     = user-set.role         ; set of roles in the system
+ logged-in-user-set   : set[User]     = session-set.user         ; set of all logged-in users in the system
+>>>>>>> 0f21024717223a26886a034844c449affa7907d5
  #+END_SRC
 
 ** Referential Integrity Constraints over entity-sets
 These specifications also capture referential integrity.
 #+BEGIN_SRC spec :tangle spec.txt
 [email, user]    :  user-set!    > email-set!
+[name, users]    :  user-set+    > name-set!    
+[role, users]    :  user-set+    > role-set!   
 #+END_SRC
 
 * Operations 
@@ -161,8 +203,49 @@ actor performing the operation.
 Operations are performed by Actors.  Our application has two
 types of actors:  =system= and =session=. 
 
+<<<<<<< HEAD
+| Operation                              | Actor                  | Referencial           | Result                              | Remarks |
+|                                        | Credential             | Integreity            |                                     |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| addUser(u:User, s:Session)             | s.user.role=admin      | u:~user-set           | user-set is changed                 |         |
+|                                        |                        | s:session-set         |                                     |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| delUser(u:User, s:Session)             | s.user.role=admin      | u:user-set            | user-set is changed                 |         |
+|                                        |                        | s:session-set         |                                     |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| makeUser(e: Email, n:Name, s: Session) | s.user.role = admin    | e:~email-set          |                                     |         |
+|                                        |                        | s:session-set  |                                     |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| getEmail(u: User, s:Session)           |                        | u:user-set            |                                     |         |
+|                                        |                        | s:session-set  |                                     |         |
+|                                        |                        |                       |                                     |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| getName(u: User, s:Session)            |                        | u:user-set            |                                     |         |
+|                                        |                        | s:session-set  |                                     |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| getRole(u: User, s:Session)            |                        | u:user-set            |                                     |         |
+|                                        |                        | s:session-set         |                                     |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| setEmail(u:User, s:Session, e:Email)   | s.user.role = admin OR | u:user-set            |                                     |         |
+|                                        | s.user=u               | s:session-set         |                                     |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| setName(u:User, s:Session, n:Name)     | s.user.role = admin OR | u:user-set            |                                     |         |
+|                                        | s.user=u               | s:session-set         |                                     |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| setRole(u:User, s:Session, r:Role)     | s.user.role = admin OR | u:user-set            |                                     |         |
+|                                        | s.user=u               | s:session-set         |                                     |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| search(e: Email, s:Session)            |                        | s:session-set         | return user                         |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| login(u: User, s:System)               |                        | u:user-set            | session is created for the user and |         |
+|                                        |                        |                       | is added to session-set             |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+| showUsers(s:Session)                   |                        | s:session-set         |                                     |         |
+|----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
+|                                        |                        |                       |                                     |         |
+=======
 |----------------------------------------+------------------------+----------------+-------------------|
 | Operation                              | Actor                  | Ref.           | Result            |
 |                                        | Credentials            | Integrity      |                   |
 |----------------------------------------+------------------------+----------------+-------------------|
-
+>>>>>>> 0f21024717223a26886a034844c449affa7907d5
