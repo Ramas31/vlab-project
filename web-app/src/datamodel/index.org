@@ -186,7 +186,7 @@ actor performing the operation.
 Operations are performed by Actors.  Our application has two
 types of actors:  =system= and =session=. 
 
-<<<<<<< HEAD
+
 | Operation                              | Actor                  | Referencial           | Result                              | Remarks |
 |                                        | Credential             | Integreity            |                                     |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
@@ -196,34 +196,34 @@ types of actors:  =system= and =session=.
 | delUser(u:User, s:Session)             | s.user.role=admin      | u:user-set            | user-set is changed                 |         |
 |                                        |                        | s:session-set         |                                     |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
-| makeUser(e: Email, n:Name, s: Session) | s.user.role = admin    | e:~email-set          |                                     |         |
+| logOut(s: Session, ss:System) |    |        |                                     |    session set reduces     |
 |                                        |                        | s:session-set  |                                     |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
 | getEmail(u: User, s:Session)           |                        | u:user-set            |                                     |         |
-|                                        |                        | s:session-set  |                                     |         |
+|                                        |                        | s:session-set  |           returns email of the user                          |         |
 |                                        |                        |                       |                                     |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
 | getName(u: User, s:Session)            |                        | u:user-set            |                                     |         |
-|                                        |                        | s:session-set  |                                     |         |
+|                                        |                        | s:session-set  |          returns name of the user                           |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
 | getRole(u: User, s:Session)            |                        | u:user-set            |                                     |         |
-|                                        |                        | s:session-set         |                                     |         |
+|                                        |                        | s:session-set         |  returns role of the user                          |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
-| setEmail(u:User, s:Session, e:Email)   | s.user.role = admin OR | u:user-set            |                                     |         |
-|                                        | s.user=u               | s:session-set         |                                     |         |
+| editEmail(u:User, s:Session, e:Email)   | s.user.role = admin  | u:user-set            |                                     |         |
+|                                        |               | s:session-set         |                                     |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
-| setName(u:User, s:Session, n:Name)     | s.user.role = admin OR | u:user-set            |                                     |         |
-|                                        | s.user=u               | s:session-set         |                                     |         |
+| editName(u:User, s:Session, n:Name)     | s.user.role = admin  | u:user-set            |                                     |         |
+|                                        |              | s:session-set         |                                     |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
-| setRole(u:User, s:Session, r:Role)     | s.user.role = admin OR | u:user-set            |                                     |         |
-|                                        | s.user=u               | s:session-set         |                                     |         |
+| editRole(u:User, s:Session, r:Role)     | s.user.role = admin  | u:user-set            |                                     |         |
+|                                        |               | s:session-set         |                                     |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
 | search(e: Email, s:Session)            |                        | s:session-set         | return user                         |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
 | login(u: User, s:System)               |                        | u:user-set            | session is created for the user and |         |
 |                                        |                        |                       | is added to session-set             |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
-| showUsers(s:Session)                   |                        | s:session-set         |                                     |         |
+| showUsers(s:Session)                   |                        | s:session-set         |  success                                   |         |
 |----------------------------------------+------------------------+-----------------------+-------------------------------------+---------|
 |                                        |                        |                       |                                     |         |
 
